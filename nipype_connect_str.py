@@ -67,18 +67,18 @@ def nipype_connect_str(connection_str):
     """
     connection_list=parse_connection_str(connection_str)
     start="""["""
-    end  ="""\n]"""
+    end  ="""]"""
     code =""""""
     for connect in connection_list.connects:
         nodes=[connect.headnode]+list(connect.middlenodes)+[connect.tailnode]
         for i in range(len(nodes)-1):
             onode=nodes[i]
             inode=nodes[i+1]
-            code+="""\n({onode},{inode},["""\
+            code+="""({onode},{inode},["""\
               .format(inode=inode.nodename, onode=onode.nodename)
-        for oarg,iarg in zip(onode.outputnames,inode.inputnames):
-            code+="""('{oarg}','{iarg}'),""".format(iarg=iarg,oarg=oarg)
-        code+="""]),"""
+            for oarg,iarg in zip(onode.outputnames,inode.inputnames):
+                code+="""('{oarg}','{iarg}'),""".format(iarg=iarg,oarg=oarg)
+            code+="""]),"""
     code=start+code+end
     return code
 

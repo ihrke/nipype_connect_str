@@ -31,7 +31,7 @@ for testidx,test in enumerate(tests):
         print "-------"
         print test
         print "-----------------------"
-        strlist=connect_str(test)
+        strlist=nipype_connect_str(test)
         print strlist
     except ParseException, pe:
         print pe
