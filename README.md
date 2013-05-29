@@ -25,5 +25,5 @@ workflow.connect(eval(nipype_connect_str(
 infosource(code) -> datasource(code|func) -> datasink(func);
 datasource(func,struct)  -> reg_func_struct(in_file,reference | out_matrix_file,out_file)
                          -> datasink(matrix,registered)
-"""
+""")))
 ~~~
