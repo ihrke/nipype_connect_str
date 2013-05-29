@@ -19,7 +19,7 @@ workflow.connect([ (infosource, datasource, [('code', 'code')]),
 
 you can now write more clearly
 
-~~~~
+~~~python
 workflow.connect(eval(nipype_connect_str(
 """
 infosource(code) -> datasource(code|func) -> datasink(func);
