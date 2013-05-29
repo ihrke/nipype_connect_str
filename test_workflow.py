@@ -45,18 +45,18 @@ infosource.iterables = [('code', codes)]
 
 
 # data-grabber
-dg = pe.Node(nio.DataGrabber(infields=['code'],
+datasource = pe.Node(nio.DataGrabber(infields=['code'],
                              outfields=['func','struct']),
                              name = 'datasource')
-dg.inputs.base_directory = base_indatadir
-dg.inputs.template = '*'
-dg.inputs.field_template = dict(func='fake%i_func.nii',
+datasource.inputs.base_directory = base_indatadir
+datasource.inputs.template = '*'
+datasource.inputs.field_template = dict(func='fake%i_func.nii',
                                 struct='fake%i_struct.nii')
-dg.inputs.template_args=dict(func=[['code']], struct=[['code']])
+datasource.inputs.template_args=dict(func=[['code']], struct=[['code']])
 
 # data-sink
-ds = pe.Node(nio.DataSink(), name='datasink')
-ds.inputs.base_directory = base_outdatadir
+datasink = pe.Node(nio.DataSink(), name='datasink')
+datasink.inputs.base_directory = base_outdatadir
 
 # create workflow object
 wf = pe.Workflow(name="wf")
@@ -67,8 +67,10 @@ reg_func_struct = pe.Node(interface=fsl.FLIRT(out_matrix_file='func_to_struct.ma
 
 
 conn=nipype_connect_str("""
-infosource(code) -> dg(code|func) -> ds(func);
-dg(func,struct) -> reg_func_struct(in_file,reference | out_matrix_file,out_file) -> ds(matrix,registered)
+infosource(code) -> datasource(code|func) -> datasink(func);
+
+datasource(func,struct)  -> reg_func_struct(in_file,reference | out_matrix_file,out_file)
+                         -> datasink(matrix,registered)
 """)
 print conn
 wf.connect(eval(conn))
