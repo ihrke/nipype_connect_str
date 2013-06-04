@@ -20,7 +20,7 @@ def check_numconnections(connects):
 def parse_connection_str(connstr):
     ## Grammar for connection syntax
     digits="0123456789"
-    othervalid="_."
+    othervalid="_.@"
     identifier= Word(alphas+digits+othervalid)
     nodename=identifier.setResultsName('nodename')
 
